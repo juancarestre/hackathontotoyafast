@@ -52,8 +52,8 @@
 
         async function sendImage(urlImgae, isVin) {
             const file = isVin ? fileVin : filePlate;
-            const formData = new FormData()
-            formData.append('myFile', file)
+            const formData = new FormData();
+            formData.append('file', file)
             const response = await fetch(urlImgae, {
                 method: 'PUT',
                 body: formData
@@ -70,8 +70,8 @@
             console.log('uploadfile----------', isVin);
             const queryParam = isVin ? 'vin' : 'plate';
             const urlImage = await getUrlImage(queryParam);
-            console.log('url----------', urlImage);
-            const imageResponse = await sendImage(urlImage);
+            console.log('url----------', urlImage.signedUrl);
+            const imageResponse = await sendImage(urlImage.signedUrl);
         }
 
         function getImageFile(file, isVin) {
