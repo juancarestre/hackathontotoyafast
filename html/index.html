@@ -42,7 +42,28 @@
         async function getUrlImage(queryParam) {
             const url = `https://b6ze4r4q74.execute-api.us-east-1.amazonaws.com/tcd-prototype-get-signed-url?path=${queryParam}`;
             const response = await fetch(url, {method: 'GET'});
-            return response;
+
+            if (response.ok) {
+                return await response.json();
+            } else {
+                alert("HTTP-Error: " + response.status);
+            }
+        }
+
+        async function sendImage(urlImgae, isVin) {
+            const file = isVin ? fileVin : filePlate;
+            const formData = new FormData()
+            formData.append('myFile', file)
+            const response = await fetch(urlImgae, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.ok) {
+                return await response.json();
+            } else {
+                alert("HTTP-Error: " + response.status);
+            }
         }
 
         async function uploadFile(theForm, isVin) {
@@ -50,8 +71,7 @@
             const queryParam = isVin ? 'vin' : 'plate';
             const urlImage = await getUrlImage(queryParam);
             console.log('url----------', urlImage);
-            var nameValue = document.getElementById("plate").value;
-            alert(nameValue);
+            const imageResponse = await sendImage(urlImage);
         }
 
         function getImageFile(file, isVin) {
