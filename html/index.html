@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>tcd</title>
+    <script>
+        var apiendpoint = 'https://b6ze4r4q74.execute-api.us-east-1.amazonaws.com/tcd-prototype-get-signed-url'
+        function myFunction() {
+
+        }
+
+        function WebSocketTest() {
+            var websocketurl = "wss://tol3bxt5gl.execute-api.us-east-1.amazonaws.com/l"
+            if ("WebSocket" in window) {
+                var ws = new WebSocket(websocketurl);
+                ws.onopen = function () {
+                    alert("connected to: " + websocketurl);
+                };
+
+                ws.onmessage = function (evt) {
+                    var received_msg = evt.data;
+                    document.getElementById("demo").innerHTML = document.getElementById("demo").innerHTML + "<br/>" + new Date().toISOString() + " ~> " + received_msg;
+                };
+
+                ws.onclose = function () {
+                    alert("Connection is closed...");
+                };
+            } else {
+                alert("WebSocket NOT supported by your Browser!");
+            }
+        }
+
+        function uploadFile(theForm) {
+            var nameValue = document.getElementById("plate").value;
+            alert(nameValue);
+        }
+
+
+
+    </script>
+</head>
+
+<body>
+    <h1>tcd</h1>
+
+    <form action="#" onsubmit="return uploadFile(this);">
+        <input type="file" id="plate" name="filename">
+        <input type="submit">
+    </form>
+
+    <form action="#" onsubmit="return uploadFile(this);">
+        <input type="file" id="vin" name="filenamex">
+        <input type="submit">
+    </form>
+
+    <script>
+        WebSocketTest();
+    </script>
+    <p id="demo"></p>
+</body>
+
+</html>
