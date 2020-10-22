@@ -2,7 +2,7 @@ const AWS = require('aws-sdk')
 const mockData = require("data.json")
 const vindecoder = require('vin-decode').default
 
-let savedPlate
+let savedPlate = ''
 
 exports.handler = async (event) => {
 
@@ -105,6 +105,11 @@ exports.handler = async (event) => {
             console.log(vinExtractedData.vin)
 
             await sendInfoToSocket(dynamoDB, `vin detected: ${vinExtractedData.vin}`)
+            
+            if (savedPlate !== '') {
+                
+            
+            
             dynamodbparams.Item = {
                 plate: savedPlate,
                 vin: vinExtractedData.vin
@@ -112,15 +117,18 @@ exports.handler = async (event) => {
             await dynamoDB.put(dynamodbparams).promise().then(async res => {
                 await sendInfoToSocket(dynamoDB, `attached vin: ${vinExtractedData.vin} with plate: ${savedPlate}`)
                 savedPlate = ''
-                await sendInfoToSocket(dynamoDB, `getting data from transit...`)
-                let transitData = fetchData(vinExtractedData.vin)
-                await sendInfoToSocket(dynamoDB, `transit data: ${JSON.stringify(transitData)}`)
 
-                await sendInfoToSocket(dynamoDB, `getting data from vin api...`)
-                let vinData = vindecoder(vinExtractedData.vin).decode()
-                await sendInfoToSocket(dynamoDB, `vin data: ${JSON.stringify(vinData)}`)
 
             })
+            }
+            await sendInfoToSocket(dynamoDB, `getting data from transit...`)
+            let transitData = fetchData(vinExtractedData.vin)
+            await sendInfoToSocket(dynamoDB, `transit data: ${JSON.stringify(transitData)}`)
+
+            await sendInfoToSocket(dynamoDB, `getting data from vin api...`)
+            let vinData = vindecoder(vinExtractedData.vin).decode()
+            await sendInfoToSocket(dynamoDB, `vin data: ${JSON.stringify(vinData)}`)
+            
         })
 
 
