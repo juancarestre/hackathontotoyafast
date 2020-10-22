@@ -4,7 +4,15 @@
 <head>
 
     <title>tcd</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    
+    
     <script>
+        var fileVin;
+        var filePlate;
         var apiendpoint = 'https://b6ze4r4q74.execute-api.us-east-1.amazonaws.com/tcd-prototype-get-signed-url'
         function myFunction() {
 
@@ -31,28 +39,60 @@
             }
         }
 
-        function uploadFile(theForm) {
+        async function getUrlImage(queryParam) {
+            const url = `https://b6ze4r4q74.execute-api.us-east-1.amazonaws.com/tcd-prototype-get-signed-url?path=${queryParam}`;
+            const response = await fetch(url, {method: 'GET'});
+            return response;
+        }
+
+        async function uploadFile(theForm, isVin) {
+            console.log('uploadfile----------', isVin);
+            const queryParam = isVin ? 'vin' : 'plate';
+            const urlImage = await getUrlImage(queryParam);
+            console.log('url----------', urlImage);
             var nameValue = document.getElementById("plate").value;
             alert(nameValue);
         }
 
-
-
+        function getImageFile(file, isVin) {
+            if (isVin) {
+                fileVin = file;
+            } else {
+                filePlate = file;
+            }
+            return window.URL.createObjectURL(file);
+        }
     </script>
 </head>
 
-<body>
-    <h1>tcd</h1>
+<body class="main-container">
+    <div class="main_title">
+        <h2>Image Recognition Vin and License Plates</h2>
+    </div>
 
-    <form action="#" onsubmit="return uploadFile(this);">
-        <input type="file" id="plate" name="filename">
-        <input type="submit">
-    </form>
+    <div class="content">
+        <form action="#" onsubmit="uploadFile(this, false)" class="form-image">
+            <div class="custom-file">
+                <input type="file" id="plate" class="custom-file-input" name="filename" onchange="document.getElementById('plateImage').src = getImageFile(this.files[0], false)">
+                <label class="custom-file-label" for="validatedCustomFile">Choose Plate...</label>
+                <div class="invalid-feedback">Example invalid custom file feedback</div>
+            </div>
+            <img id="plateImage" src="" class="form-image__image" onerror="this.src='./assets/placeholder_image.svg'">        
+            <input type="submit" class="btn btn-primary form-image__submit" value="Save plate">
+        </form>
+    
+        <form action="#" onsubmit="uploadFile(this, true)" class="form-image">
+            <div class="custom-file">
+                <input type="file" id="vin" class="custom-file-input" name="filenamex" onchange="document.getElementById('vinImage').src = getImageFile(this.files[0], true)" required>
+                <label class="custom-file-label" for="validatedCustomFile">Choose VIN...</label>
+                <div class="invalid-feedback">Example invalid custom file feedback</div>
+            </div>
+            <img id="vinImage" src="" class="form-image__image" onerror="this.src='./assets/placeholder_image.svg'"> 
+            <input type="submit" class="btn btn-primary form-image__submit" value="Save vin">
+        </form>
+    </div>
 
-    <form action="#" onsubmit="return uploadFile(this);">
-        <input type="file" id="vin" name="filenamex">
-        <input type="submit">
-    </form>
+
 
     <script>
         WebSocketTest();

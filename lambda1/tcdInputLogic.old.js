@@ -42,7 +42,7 @@ exports.handler = async (event) => {
 
             console.log(carExtractedData.plate)
 
-            await sendInfoToSocket(dynamoDB, `cart plate detected: ${carExtractedData.plate}`)
+            await sendInfoToSocket(dynamoDB, `car plate detected: ${carExtractedData.plate}`)
             await sendInfoToSocket(dynamoDB, `searching if your car is already registered...`)
 
 
@@ -61,7 +61,7 @@ exports.handler = async (event) => {
             if (result.Items.length === 0) {
                 carExtractedData.registered = false
                 savedPlate = carExtractedData.plate
-                await sendInfoToSocket(dynamoDB, `your car is not in our database, take picture of bin to register`)
+                await sendInfoToSocket(dynamoDB, `your car is not in our database, take picture of vin to register`)
 
             } else {
                 carExtractedData.registered = true

@@ -60,7 +60,7 @@ exports.handler = async (event) => {
             if (result.Items.length === 0) {
                 carExtractedData.registered = false
                 savedPlate = carExtractedData.plate
-                await sendInfoToSocket(dynamoDB, `your car is not in our database, take picture of bin to register`)
+                await sendInfoToSocket(dynamoDB, `your car is not in our database, take picture of vin to register`)
 
             } else {
                 carExtractedData.registered = true
