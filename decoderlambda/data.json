@@ -1,0 +1,38 @@
+{
+    "1": {
+        "carInfractions": "1",
+        "carOwner": "josh"
+    },
+        "2": {
+        "carInfractions": "2",
+        "carOwner": "ryan"
+    },
+        "3": {
+        "carInfractions": "3",
+        "carOwner": "manish"
+    },
+        "4": {
+        "carInfractions": "4",
+        "carOwner": "raghav"
+    },
+        "5": {
+        "carInfractions": "5",
+        "carOwner": "messi"
+    },
+        "6": {
+        "carInfractions": "6",
+        "carOwner": "milton"
+    },
+        "7": {
+        "carInfractions": "7",
+        "carOwner": "andres"
+    },
+        "8": {
+        "carInfractions": "8",
+        "carOwner": "dario"
+    },
+        "9": {
+        "carInfractions": "9",
+        "carOwner": "dario"
+    }
+}
