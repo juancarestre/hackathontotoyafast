@@ -52,26 +52,25 @@
 
         async function sendImage(urlImgae, isVin) {
             const file = isVin ? fileVin : filePlate;
-            const formData = new FormData();
-            formData.append('file', file)
             const response = await fetch(urlImgae, {
                 method: 'PUT',
-                body: formData
+                headers: {
+                    "Content-Type": "image/png"
+                },
+                body: file
             });
 
             if (response.ok) {
-                return await response.json();
+                return await response;
             } else {
                 alert("HTTP-Error: " + response.status);
             }
         }
 
         async function uploadFile(theForm, isVin) {
-            console.log('uploadfile----------', isVin);
             const queryParam = isVin ? 'vin' : 'plate';
             const urlImage = await getUrlImage(queryParam);
-            console.log('url----------', urlImage.signedUrl);
-            const imageResponse = await sendImage(urlImage.signedUrl);
+            const imageResponse = await sendImage(urlImage.signedUrl, isVin);
         }
 
         function getImageFile(file, isVin) {
@@ -91,25 +90,25 @@
     </div>
 
     <div class="content">
-        <form action="#" onsubmit="uploadFile(this, false)" class="form-image">
+        <div class="form-image">
             <div class="custom-file">
                 <input type="file" id="plate" class="custom-file-input" name="filename" onchange="document.getElementById('plateImage').src = getImageFile(this.files[0], false)">
                 <label class="custom-file-label" for="validatedCustomFile">Choose Plate...</label>
                 <div class="invalid-feedback">Example invalid custom file feedback</div>
             </div>
             <img id="plateImage" src="" class="form-image__image" onerror="this.src='./assets/placeholder_image.svg'">        
-            <input type="submit" class="btn btn-primary form-image__submit" value="Save plate">
-        </form>
+            <button onclick="uploadFile(this, false)" class="btn btn-primary form-image__submit" >Save plate</button>
+        </div>
     
-        <form action="#" onsubmit="uploadFile(this, true)" class="form-image">
+        <div class="form-image">
             <div class="custom-file">
                 <input type="file" id="vin" class="custom-file-input" name="filenamex" onchange="document.getElementById('vinImage').src = getImageFile(this.files[0], true)" required>
                 <label class="custom-file-label" for="validatedCustomFile">Choose VIN...</label>
                 <div class="invalid-feedback">Example invalid custom file feedback</div>
             </div>
             <img id="vinImage" src="" class="form-image__image" onerror="this.src='./assets/placeholder_image.svg'"> 
-            <input type="submit" class="btn btn-primary form-image__submit" value="Save vin">
-        </form>
+            <button  class="btn btn-primary form-image__submit" onclick="uploadFile(this, true)" >Save vin</button>
+        </div>
     </div>
 
 
