@@ -23,7 +23,9 @@
             if ("WebSocket" in window) {
                 var ws = new WebSocket(websocketurl);
                 ws.onopen = function () {
-                    alert("connected to: " + websocketurl);
+                    // alert("connected to: " + websocketurl);
+                    console.log("connected to: " + websocketurl);
+
                 };
 
                 ws.onmessage = function (evt) {
